@@ -1,0 +1,27 @@
+#!/bin/sh
+# www.falinux.com
+#
+
+CMP=$1
+
+  shift
+    
+while [ -n "$(echo $1)" ]; do
+
+	ARG=$( echo ${1%=*})
+	
+	if [ "$CMP" = "$ARG" ]; then
+
+		IFS="="
+		set  $1
+        
+        echo $2
+        break;
+    fi;
+
+    shift
+done
+
+
+
+

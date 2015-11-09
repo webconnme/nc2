@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# Start the mount ....
+#
+
+# 
+
+case "$1" in
+  start)
+ 	echo "Starting webconn mount..."
+	
+	mkdir /webconn/etc
+	mkdir /webconn/usr
+
+	mount -t yaffs /dev/mtdblock5 /webconn/etc
+	mount -t yaffs /dev/mtdblock6 /webconn/usr
+	;;
+  stop)
+	echo -n "Stopping webconn mount..."
+	
+	umount /webconn/etc
+	umount /webconn/usr
+	rm -r /webconn/etc
+	rm -r /webconn/usr
+
+	;;
+  restart|reload)
+	"$0" stop
+	"$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

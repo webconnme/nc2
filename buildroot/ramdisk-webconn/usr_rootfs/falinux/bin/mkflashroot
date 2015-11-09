@@ -1,0 +1,61 @@
+#!/bin/sh
+
+echo "mkflashroot ver 1.3 (www.falinux.com)"
+echo "wait about 20sec ..."
+
+cd /
+
+#echo "backup app"
+#mkdir  /tmp/
+#cp -a  /app /tmp
+#rm -rf /app/*
+
+echo "copy /bin"
+cp -a bin  /app
+echo "copy /dev"
+cp -a dev  /app
+echo "copy /etc"
+cp -a etc  /app
+echo "copy /home"
+cp -a home /app
+echo "copy /lib"
+cp -a lib  /app
+echo "copy /root"
+cp -a root /app
+echo "copy /sbin"
+cp -a sbin /app
+echo "copy /tmp"
+cp -a tmp  /app
+echo "copy /usr"
+cp -a usr  /app
+echo "copy /var"
+cp -a var  /app
+
+mkdir /app/proc
+mkdir /app/mnt
+mkdir /app/mnt/nfs
+mkdir /app/mnt/hdd
+mkdir /app/mnt/mmc
+mkdir /app/mnt/usb1
+mkdir /app/mnt/usb2
+mkdir /app/mnt/nand
+mkdir /app/mnt/temp
+mkdir /app/mnt/win
+mkdir /app/sys
+mkdir /app/app
+echo "mkdir ...done"
+
+echo "restore app"
+cp -a /tmp/app /app
+
+chmod 777 -R /app/app
+chmod 777 -R /app/mnt
+
+#--fixup--
+#cp -f /root/.fstab /app/etc/fstab
+
+sync 
+
+echo " "
+echo ": will be changed [noinitrd root=/dev/mmcblk0--]"
+echo " "

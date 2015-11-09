@@ -1,0 +1,41 @@
+#!/bin/sh
+
+start() {
+  echo -n "Starting led daemon: "
+  if [ -f /etc/ledd.conf ]
+  then
+    source /etc/ledd.conf
+  fi
+  start-stop-daemon -S -m -b -q -p /var/run/ledd.pid --exec /falinux/bin/ledd ${LED_MODE}
+  [ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+stop() {
+  echo -n "Stopping led daemon: "
+  start-stop-daemon -K -q -p /var/run/ledd.pid
+  [ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+restart() {
+  stop
+  sleep 1
+  start
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart|reload)
+    restart
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+
+exit $?
+

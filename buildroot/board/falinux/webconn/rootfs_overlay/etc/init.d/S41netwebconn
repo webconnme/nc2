@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# Start the network....
+#
+
+# Debian ifupdown needs the /run/network lock directory
+NET_CFG_FILE=/webconn/etc/eth0.sh
+
+mkdir -p /run/network_webconn
+
+case "$1" in
+  start)
+ 	echo "Starting webconn network..."
+	if [ -e $NET_CFG_FILE ]; then
+	   echo "WebConn User ip set........."
+	   sh $NET_CFG_FILE
+	else
+	   echo "WebConn default ip set........"
+	   ifconfig eth0 192.168.10.232 netmask 255.255.0.0 up
+           route add default gw 192.168.10.1
+	fi
+	;;
+  stop)
+	echo -n "Stopping webconn network..."
+	ifconfig eth0 down
+	;;
+  restart|reload)
+	"$0" stop
+	"$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

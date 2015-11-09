@@ -1,0 +1,27 @@
+#!/bin/sh
+
+SERVER_IP=$(cmd_parsing host $(cat /proc/cmdline))
+LAST_IP=$1
+
+if [ "$1" != "" ]; then
+	case "$1" in
+		*.*.*.*)
+			SERVER_IP=$1
+			;;
+		*.*)		
+			IFS="."
+			set  $SERVER_IP
+			SERVER_IP=$1"."$2"."$LAST_IP
+			IFS=""
+			;;
+		*)	
+			IFS="."
+			set  $SERVER_IP
+			SERVER_IP=$1"."$2"."$3"."$LAST_IP
+			IFS=""
+			;;
+	esac
+fi
+
+echo "                        >> "$SERVER_IP
+mount -t nfs -o nolock,rsize=1024,wsize=1024 $SERVER_IP:/nfs /mnt/nfs

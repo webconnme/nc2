@@ -1,0 +1,50 @@
+#!/bin/sh
+#
+# Configure from usb stick
+#
+
+# 
+
+case "$1" in
+  start)
+ 	echo "Starting configuration from USB..."
+	if [ -d /sys/block/sda ]; then
+		mount -t vfat /dev/sda1 /mnt/usb
+
+		if [ -f /mnt/usb/falinux/eth0.sh ]
+		then
+			cp /mnt/usb/falinux/eth0.sh /webconn/etc/eth0.sh
+			chmod 755 /webconn/etc/eth0.sh
+			echo LED_MODE=2 > /etc/ledd.conf
+		fi
+
+		if [ -f /mnt/usb/falinux/rs232.conf ]
+		then
+			cp /mnt/usb/falinux/rs232.conf /webconn/etc/init/rs232.conf
+			chmod 644 /webconn/etc/init/rs232.conf
+			echo LED_MODE=2 > /etc/ledd.conf
+		fi
+
+		if [ -f /mnt/usb/falinux/tcp-server.conf ]
+		then
+			cp /mnt/usb/falinux/tcp-server.conf /webconn/etc/init/tcp-server.conf
+			chmod 644 /webconn/etc/init/tcp-server.conf
+			echo LED_MODE=2 > /etc/ledd.conf
+		fi
+		sync
+		umount /dev/sda1
+	fi
+	;;
+  stop)
+	;;
+  restart|reload)
+	"$0" stop
+	"$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

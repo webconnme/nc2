@@ -1,0 +1,20 @@
+1. first downloader
+
+	1-1. HOST PC ( ubuntu )
+
+		$ sudo ./usb-downloader -t nxp2120 -n ./DTK.700.350.175.087-192.NSIH.txt -f ../bootloader/u-boot.bin 80100000 80100000
+
+	1.2. Target Board
+
+		nxp2120# ufb
+		      	>>udown 0x81000000
+			      Download Address 81000000
+
+	1.3, NAND Boot image downloader
+
+		HOST PC ( ubuntu )
+
+		$ lsusb
+			 Bus 003 Device 110: ID 2375:2120 Digit@lway, Inc. 
+
+		$ sudo ./usb-downloader -t nxp2120 -n ./DTK.700.350.175.087-192.NSIH.txt -f ./u-boot.bin.ec -a 81000000

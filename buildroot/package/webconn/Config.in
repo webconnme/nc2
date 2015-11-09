@@ -1,0 +1,9 @@
+config BR2_PACKAGE_WEBCONN
+	bool "webconn"
+	help
+	 This is a comment that explains what libfoo is.
+
+
+	 http://foosoftware.org/libfoo/
+
+
